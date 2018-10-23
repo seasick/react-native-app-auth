@@ -220,8 +220,13 @@ public class RNAppAuthModule extends ReactContextBaseJavaModule implements Activ
             );
 
             AuthorizationService authService = new AuthorizationService(this.reactContext, configuration);
+            Map newAdditionalParameters = new HashMap<String, String>(this.additionalParametersMap);
 
-            TokenRequest tokenRequest = response.createTokenExchangeRequest(this.additionalParametersMap);
+            if (this.clientSecret != null) {
+              newAdditionalParameters.remove("client_secret");
+            }
+
+            TokenRequest tokenRequest = response.createTokenExchangeRequest(newAdditionalParameters);
 
             AuthorizationService.TokenResponseCallback tokenResponseCallback = new AuthorizationService.TokenResponseCallback() {
 
